@@ -52,16 +52,16 @@ print("a is 71") if a == 71 else print("a is something else")
 # For loop
 
 words = ["machine", "learning", "in", "python"]
-for x in words:
-    print(x)
+for word in words:
+    print(word)
 print("--")
 
-for x in range(2, 10):
-    print(x)
+for number in range(2, 10):
+    print(number)
 print("--")
 
-for x in range(2, 15, 3):
-    print(x)
+for number in range(2, 15, 3):
+    print(number)
 
 ######
 # While loop
