@@ -37,6 +37,9 @@ def main():
         if ball_rect.top < 0 or ball_rect.bottom > height:
             speed[1] = -speed[1]
 
+        # Try carefully
+        # background_color = int(random() * 255), int(random() * 255), int(random() * 255)
+
         # Redraw the screen (order matters)
         screen.fill(background_color)
         screen.blit(ball, ball_rect)
