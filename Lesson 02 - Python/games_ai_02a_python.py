@@ -89,7 +89,7 @@ print(result2)
 ######
 # Imports
 
-import os
+import os  # In general code, this will be at the beginning of the file
 
 print(os.listdir())
 if not os.path.exists("test"):
