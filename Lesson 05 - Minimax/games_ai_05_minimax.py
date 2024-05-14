@@ -29,7 +29,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Tic Tac Toe with Minimax AI")
 screen.fill(BACKGROUND_COLOR)
 
-# Tic Tac Toe board (3x3 matrix)
+# Tic Tac Toe board (3×3 matrix)
 board = [["" for _ in range(3)] for _ in range(3)]
 
 # Define player and AI marks
@@ -68,10 +68,10 @@ def draw_marks():
 
             # Fill in already made moves
             if board[row][col] == HUMAN:
-                # Draw O mark
+                # Draw O mark for human player
                 pygame.draw.circle(screen, O_COLOR, (center_x, center_y), int(min(CELL_WIDTH, CELL_HEIGHT) / 4), 5)
             elif board[row][col] == AI:
-                # Draw X mark
+                # Draw X mark for AI player
                 margin = int(min(CELL_WIDTH, CELL_HEIGHT) / 4)  # Margin from the cell borders
                 pygame.draw.line(screen, X_COLOR, (center_x - margin, center_y - margin), (center_x + margin, center_y + margin), 5)
                 pygame.draw.line(screen, X_COLOR, (center_x + margin, center_y - margin), (center_x - margin, center_y + margin), 5)
