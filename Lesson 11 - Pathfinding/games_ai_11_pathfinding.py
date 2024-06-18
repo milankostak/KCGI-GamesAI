@@ -24,8 +24,10 @@ DIJKSTRA = "Dijkstra"
 A_STAR = "A*"
 
 
-# Node class to represent each cell in the grid
 class Node:
+    """
+    A class to represent each cell/node in the grid.
+    """
     def __init__(self, row, col, width, total_rows):
         self.row = row
         self.col = col
@@ -97,8 +99,13 @@ START = Node(0, 0, 0, 0)
 END = Node(0, 0, 0, 0)
 
 
-# Heuristic function for A* (Manhattan distance)
 def heuristic(p1, p2):
+    """
+    Calculates the Manhattan distance between two points - heuristic for A*.
+    :param p1: The first point.
+    :param p2: The second point.
+    :return: The Manhattan distance between the two points.
+    """
     x1, y1 = p1
     x2, y2 = p2
     return abs(x1 - x2) + abs(y1 - y2)
@@ -106,6 +113,11 @@ def heuristic(p1, p2):
 
 # Reconstruct path after algorithm finishes
 def reconstruct_path(came_from, current):
+    """
+    Reconstructs the path after the algorithm finishes.
+    :param came_from: The dictionary containing the path.
+    :param current: The current node.
+    """
     while current in came_from:
         current = came_from[current]
         current.make_path()
@@ -114,6 +126,12 @@ def reconstruct_path(came_from, current):
 
 # Algorithm implementations
 def algorithm(start: Node, end: Node, algorithm_type=A_STAR):
+    """
+    Implements the A* or Dijkstra's algorithm to find the shortest path between the start and end nodes.
+    :param start: The start node.
+    :param end: The end node.
+    :param algorithm_type: The type of algorithm to use (A* or Dijkstra).
+    """
     count = 0
     open_set = PriorityQueue()
     open_set.put((0, count, start))
@@ -162,6 +180,9 @@ def algorithm(start: Node, end: Node, algorithm_type=A_STAR):
 
 
 def make_grid():
+    """
+    Creates the grid of nodes.
+    """
     global GRID, START, END
     GRID = []
     gap = WIDTH // ROWS  # Divide the total width by the number of rows to get the width of each cell
@@ -181,6 +202,9 @@ def make_grid():
 
 
 def draw_grid():
+    """
+    Draws the grid lines.
+    """
     gap = WIDTH // ROWS
     for i in range(ROWS):
         pygame.draw.line(WINDOW, GREY, (0, i * gap), (WIDTH, i * gap))  # Draw horizontal lines
@@ -189,6 +213,9 @@ def draw_grid():
 
 
 def draw():
+    """
+    Draws the grid and all of its nodes.
+    """
     WINDOW.fill(WHITE)
 
     for row in GRID:
@@ -200,6 +227,11 @@ def draw():
 
 
 def get_clicked_pos(pos):
+    """
+    Returns the row and column of the cell that was clicked.
+    :param pos: The position of the mouse click.
+    :return: The row and column of the cell that was clicked.
+    """
     gap = WIDTH // ROWS
     y, x = pos
 
@@ -214,9 +246,9 @@ def generate_random_obstacles(obstacle_probability=0.1):
     Fills the grid with random obstacles.
 
     Parameters:
-    - grid: The grid of nodes.
-    - start: The start node, which should not be turned into an obstacle.
-    - end: The end node, which should not be turned into an obstacle.
+    - GRID: The grid of nodes.
+    - START: The start node, which should not be turned into an obstacle.
+    - END: The end node, which should not be turned into an obstacle.
     - obstacle_probability: The probability of a node becoming an obstacle (between 0 and 1).
     """
     for row in GRID:
@@ -226,6 +258,9 @@ def generate_random_obstacles(obstacle_probability=0.1):
 
 
 def reset_grid():
+    """
+    Resets the grid to its original state, keeping the start and end nodes.
+    """
     for row in GRID:
         for node in row:
             if node.is_barrier():
@@ -241,14 +276,14 @@ def reset_grid():
 def main():
     make_grid()
 
-    run = True
+    running = True
     algorithm_type = A_STAR
 
-    while run:
+    while running:
         draw()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                running = False
 
             if pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[2]:  # Left or right mouse button
                 pos = pygame.mouse.get_pos()
@@ -263,9 +298,11 @@ def main():
                         node.reset()
 
             if event.type == pygame.KEYDOWN:
+                # Press 'C' to clear the grid
                 if event.key == pygame.K_c:
                     make_grid()
 
+                # Press 'Space' to start the algorithm
                 elif event.key == pygame.K_SPACE:
                     for row in GRID:
                         for node in row:
@@ -273,15 +310,18 @@ def main():
 
                     algorithm(START, END, algorithm_type)
 
-                elif event.key == pygame.K_a:  # Press 'A' to select A* algorithm
+                # Press 'A' to select A* algorithm
+                elif event.key == pygame.K_a:
                     algorithm_type = A_STAR
                     reset_grid()
 
-                elif event.key == pygame.K_d:  # Press 'D' to select Dijkstra's algorithm
+                # Press 'D' to select Dijkstra's algorithm
+                elif event.key == pygame.K_d:
                     algorithm_type = DIJKSTRA
                     reset_grid()
 
-                elif event.key == pygame.K_r:  # Press 'R' to generate random obstacles
+                # Press 'R' to generate random obstacles
+                elif event.key == pygame.K_r:
                     generate_random_obstacles()
 
     pygame.quit()
