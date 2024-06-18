@@ -111,7 +111,6 @@ def heuristic(p1, p2):
     return abs(x1 - x2) + abs(y1 - y2)
 
 
-# Reconstruct path after algorithm finishes
 def reconstruct_path(came_from, current):
     """
     Reconstructs the path after the algorithm finishes.
@@ -124,7 +123,6 @@ def reconstruct_path(came_from, current):
         draw()
 
 
-# Algorithm implementations
 def algorithm(start: Node, end: Node, algorithm_type=A_STAR):
     """
     Implements the A* or Dijkstra's algorithm to find the shortest path between the start and end nodes.
@@ -285,7 +283,8 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-            if pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[2]:  # Left or right mouse button
+            # Left or right mouse button
+            if pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[2]:
                 pos = pygame.mouse.get_pos()
                 if pos[0] < 0 or pos[0] >= WIDTH or pos[1] < 0 or pos[1] >= WIDTH:
                     continue
