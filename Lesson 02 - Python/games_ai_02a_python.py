@@ -43,7 +43,7 @@ if a == 1 or a == 2 or a == 3:
 a = 7
 b = 3
 if a == 7 and b == 3:
-    print("a is 5 and b is 3")
+    print("a is 7 and b is 3")
 
 a = 71
 print("a is 71") if a == 71 else print("a is something else")
@@ -83,6 +83,7 @@ def test(param1, param2=0):
 
 result1 = test("aa")
 print(result1)
+print("--")
 result2 = test(14, 7)
 print(result2)
 
@@ -105,6 +106,7 @@ print(os.listdir())
 x = [1, 2, 31]
 print(x)
 print(x[1])
+print(x[-1])
 
 x.append(8)
 print(x)
@@ -117,7 +119,7 @@ value = x.pop()
 print(value)
 print(x)
 
-x.remove(2)
+x.remove(31)
 print(x)
 
 x.reverse()
@@ -130,10 +132,12 @@ japan = {
     "name": "Japan",
     "short": "JP",
     "capital": "Tokyo",
-    "population": 125_600_000,
+    "population": 123_900_000,
     "neighbors": []
 }
 print(japan)
+print(japan["name"])
+print(japan.keys())
 
 czechia = {
     "name": "Czechia",
@@ -149,9 +153,9 @@ print(czechia)
 
 y = [5, 7, 8]
 try:
-    y.remove(1)
+    y.remove(10)
 except ValueError:
-    print("Value of 1 is not in the list")
+    print("Value of 10 is not in the list")
 finally:
     y.clear()
 

@@ -8,11 +8,12 @@ def main():
     # Set the size of the window
     size = width, height = 1280, 480
 
-    # Set the speed of the ball (can be different for x and y)
+    # Set the speed of the ball (can be different for X and Y axis)
     speed = [1, 1]
 
     # Set the background color (RGB)
-    background_color = 30, 30, 30
+    # https://en.wikipedia.org/wiki/RGB_color_model
+    background_color = (50, 200, 50)  # 2^8 - 1 = 255
 
     # Create the window
     screen = pygame.display.set_mode(size)
