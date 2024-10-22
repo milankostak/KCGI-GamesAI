@@ -7,11 +7,11 @@ def main():
 
     # Screen dimensions
     screen_width, screen_height = 900, 500
-    screen = pygame.display.set_mode((screen_width, screen_height))
+    screen = pygame.display.set_mode(size=(screen_width, screen_height))
 
     # Colors
-    background_color = (40, 40, 40)
-    items_color = (255, 221, 51)
+    background_color = (40, 40, 40)  # dark gey
+    items_color = (255, 220, 50)  # orange
 
     # Ball settings
     ball_size = 16
@@ -19,8 +19,8 @@ def main():
     ball_y_speed = 5
 
     # Ball position
-    ball_x = screen_width // 2
-    ball_y = screen_height // 2
+    ball_x = (screen_width // 2) - (ball_size // 2)
+    ball_y = (screen_height // 2) - (ball_size // 2)
 
     # Paddles settings
     paddle_width, paddle_height = 10, 60
@@ -58,7 +58,7 @@ def main():
         if ball_y <= 0 or ball_y >= screen_height - ball_size:
             ball_y_speed *= -1
 
-        # Ball collision with paddles
+        # Ball collisions with paddles
         left_paddle_collision = ball_x <= paddle_width and left_paddle_y < ball_y < left_paddle_y + paddle_height
         right_paddle_collision = (ball_x >= screen_width - paddle_width - ball_size) and \
                                  (right_paddle_y < ball_y < right_paddle_y + paddle_height)
@@ -67,12 +67,13 @@ def main():
 
         # Scoring
         if ball_x < 0 or ball_x > screen_width:
-            ball_x, ball_y = screen_width // 2, screen_height // 2
+            ball_x, ball_y = (screen_width // 2) - (ball_size // 2), (screen_height // 2) - (ball_size // 2)
 
         # Drawing
-        screen.fill(background_color)
+        screen.fill(color=background_color)
         pygame.draw.rect(screen, items_color, (0, left_paddle_y, paddle_width, paddle_height))
-        pygame.draw.rect(screen, items_color, (screen_width - paddle_width, right_paddle_y, paddle_width, paddle_height))
+        pygame.draw.rect(screen, items_color,
+                         (screen_width - paddle_width, right_paddle_y, paddle_width, paddle_height))
         pygame.draw.ellipse(screen, items_color, (ball_x, ball_y, ball_size, ball_size))
 
         pygame.display.flip()
@@ -84,5 +85,5 @@ def main():
 if __name__ == "__main__":
     main()
 
-# Ctrl+Alt+O - Organize imports
-# Ctrl+Alt+L - Format code according to the settings
+# Ctrl+Alt+O / Control+Option+O = Organize imports
+# Ctrl+Alt+L / Option+Command+L = Format code according to the settings
