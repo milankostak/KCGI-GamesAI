@@ -15,12 +15,12 @@ CELL_WIDTH = SCREEN_WIDTH / 3
 CELL_HEIGHT = SCREEN_HEIGHT / 3
 
 # Colors
-BACKGROUND_COLOR = (200, 200, 200)  # White-ish
+BACKGROUND_COLOR = (200, 200, 200)  # Light grey
 X_WIN_COLOR = (200, 150, 150)  # Red
 O_WIN_COLOR = (150, 150, 200)  # Blue
 DRAW_COLOR = (150, 150, 150)  # Gray
 
-LINE_COLOR = (30, 30, 30)  # Black
+LINE_COLOR = (30, 30, 30)  # Dark grey
 X_COLOR = (200, 0, 0)  # Red
 O_COLOR = (0, 0, 200)  # Blue
 
