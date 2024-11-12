@@ -1,4 +1,3 @@
-import math
 import sys
 
 import pygame
@@ -25,7 +24,7 @@ X_COLOR = (200, 0, 0)  # Red
 O_COLOR = (0, 0, 200)  # Blue
 
 # Screen setup
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen = pygame.display.set_mode(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Tic Tac Toe with Heuristics AI")
 screen.fill(BACKGROUND_COLOR)
 
@@ -40,8 +39,6 @@ AI = "X"
 game_over = False
 winner = None
 current_player = HUMAN  # Human starts
-
-iterations = 0
 
 
 def draw_board():
@@ -160,10 +157,8 @@ def ai_turn():
     """
     Perform the AI's move using the heuristic evaluation
     """
-    global current_player
     row, col = evaluate_move()
     board[row][col] = AI
-    current_player = HUMAN
 
 
 def main_loop():
@@ -196,10 +191,10 @@ def main_loop():
 
         if current_player == AI and not game_over:
             ai_turn()
+            current_player = HUMAN
             if check_win(AI):
                 game_over = True
                 winner = AI
-            current_player = HUMAN
 
         if winner == HUMAN:
             screen.fill(O_WIN_COLOR)

@@ -25,8 +25,8 @@ X_COLOR = (200, 0, 0)  # Red
 O_COLOR = (0, 0, 200)  # Blue
 
 # Screen setup
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Tic Tac Toe with Heuristics AI")
+screen = pygame.display.set_mode(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Tic Tac Toe with Heuristics + Minimax AI")
 screen.fill(BACKGROUND_COLOR)
 
 # Tic Tac Toe board (3×3 matrix)
@@ -201,7 +201,7 @@ def ai_turn():
 
     # 4 Other optimisations... TODO up to you
 
-    # 5 Otherwise run Minimax if we have incineration situation
+    # 5 Otherwise run Minimax if we have other situation
     global iterations
     iterations = 0
     best_score = -math.inf
