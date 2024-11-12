@@ -15,12 +15,12 @@ CELL_WIDTH = SCREEN_WIDTH / 3
 CELL_HEIGHT = SCREEN_HEIGHT / 3
 
 # Colors
-BACKGROUND_COLOR = (200, 200, 200)  # White-ish
+BACKGROUND_COLOR = (200, 200, 200)  # Light grey
 X_WIN_COLOR = (200, 150, 150)  # Red
 O_WIN_COLOR = (150, 150, 200)  # Blue
 DRAW_COLOR = (150, 150, 150)  # Gray
 
-LINE_COLOR = (30, 30, 30)  # Black
+LINE_COLOR = (30, 30, 30)  # Dark grey
 X_COLOR = (200, 0, 0)  # Red
 O_COLOR = (0, 0, 200)  # Blue
 
@@ -149,7 +149,7 @@ def evaluate_move():
 
     # 5 Take any open space
     # - they are the least powerful cells in the game - it gives you only 2 possible winning states (1 row, 1 column)
-    # - but the player always have to make a move
+    # - but the player always has to make a move
     for row in range(3):
         for col in range(3):
             if board[row][col] == "":  # If the cell is empty
