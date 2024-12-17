@@ -77,7 +77,7 @@ def main():
         pygame.draw.ellipse(screen, items_color, (ball_x, ball_y, ball_size, ball_size))
 
         pygame.display.flip()
-        pygame.time.Clock().tick(60)
+        pygame.time.Clock().tick(60)  # FPS
 
     pygame.quit()
 
