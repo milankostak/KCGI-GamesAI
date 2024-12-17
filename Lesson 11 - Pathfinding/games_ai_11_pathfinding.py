@@ -137,7 +137,7 @@ def algorithm(start: Node, end: Node, algorithm_type=A_STAR):
     g_score = {node: float("inf") for row in GRID for node in row}
     g_score[start] = 0
     f_score = {node: float("inf") for row in GRID for node in row}
-    f_score[start] = heuristic(start.get_pos(), end.get_pos()) if algorithm_type == "A*" else 0
+    f_score[start] = heuristic(start.get_pos(), end.get_pos()) if algorithm_type == A_STAR else 0
 
     open_set_hash = {start}
 
@@ -160,7 +160,7 @@ def algorithm(start: Node, end: Node, algorithm_type=A_STAR):
             if temp_g_score < g_score[neighbor]:
                 came_from[neighbor] = current
                 g_score[neighbor] = temp_g_score
-                if algorithm_type == "A*":
+                if algorithm_type == A_STAR:
                     f_score[neighbor] = temp_g_score + heuristic(neighbor.get_pos(), end.get_pos())
                 else:  # For Dijkstra, we don't use a heuristic.
                     f_score[neighbor] = temp_g_score
