@@ -1,4 +1,6 @@
 import pygame
+from pygame.font import Font
+from pygame.key import ScancodeWrapper
 
 
 def main():
@@ -6,41 +8,43 @@ def main():
     pygame.init()
 
     # Screen dimensions
-    screen_width, screen_height = 900, 500
+    screen_width: int = 900
+    screen_height: int = 500
     screen = pygame.display.set_mode(size=(screen_width, screen_height))
 
     # Colors
-    background_color = (40, 40, 40)  # dark gey
-    items_color = (255, 220, 50)  # orange
+    background_color: tuple[int, int, int] = (40, 40, 40)  # dark gey
+    items_color: tuple[int, int, int] = (255, 220, 50)  # orange
 
     # Ball settings
-    ball_size = 16
-    ball_x_speed = 5
-    ball_y_speed = 5
+    ball_size: int = 16
+    ball_x_speed: int = 5
+    ball_y_speed: int = 5
 
     # Ball position
-    ball_x = (screen_width // 2) - (ball_size // 2)
-    ball_y = (screen_height // 2) - (ball_size // 2)
+    ball_x: int = (screen_width // 2) - (ball_size // 2)
+    ball_y: int = (screen_height // 2) - (ball_size // 2)
 
     # Paddles settings
-    paddle_width, paddle_height = 10, 60
-    paddle_speed = 10
+    paddle_width: int = 10
+    paddle_height: int = 60
+    paddle_speed: int = 10
 
     # Paddles positions
-    left_paddle_y = (screen_height // 2) - (paddle_height // 2)
-    right_paddle_y = (screen_height // 2) - (paddle_height // 2)
+    left_paddle_y: int = (screen_height // 2) - (paddle_height // 2)
+    right_paddle_y: int = (screen_height // 2) - (paddle_height // 2)
 
-    font = pygame.font.Font(None, 36)
+    font: Font = pygame.font.Font(None, 36)
 
     # Game loop
-    running = True
+    running: bool = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
         # Manage pressed keys
-        keys = pygame.key.get_pressed()
+        keys: ScancodeWrapper = pygame.key.get_pressed()
         if keys[pygame.K_w] and left_paddle_y > 0:
             left_paddle_y -= paddle_speed
         if keys[pygame.K_s] and left_paddle_y < screen_height - paddle_height:
