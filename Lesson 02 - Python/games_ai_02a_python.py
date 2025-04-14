@@ -12,27 +12,35 @@ b = "Japan"
 print(a)
 print(b)
 b = 5
-print(b)  # b changed type
+print(b)  # b changed type - discouraged to do so! - choose different name
 print(type(b))
 b = "KCG"
 print(type(b))
 
 ######
+# Types
+# They are inferred by the interpreter, writing in the code is not necessary but a good practice, helps to read the code
+
+number: int = 42
+number = number + 8  # okay if you accept mutability
+number = "string"  # allowed by the interpreter, IDEs and linters give you warnings
+
+######
 # Strings formatting
 
-a = "Tokyo"
-b = "Kyoto"
-c = a + b
-print(c)
-print(f"{a} and {b}")
+string1: str = "Tokyo"
+string2: str = "Kyoto"
+string3: str = string1 + string2
+print(string3)
+print(f"{string1} and {string2}")
 
 ######
 # If condition
 
-a = 5
-if a == 1:
+number2: int = 5
+if number2 == 1:
     print("a is 1")
-elif a == 2:
+elif number2 == 2:
     print("a is 2")
 else:
     print("a is something else")
@@ -40,18 +48,18 @@ else:
 if a == 1 or a == 2 or a == 3:
     print("a is 1 or 2 or 3")
 
-a = 7
-b = 3
-if a == 7 and b == 3:
+number3 = 7
+number4 = 3
+if number3 == 7 and number4 == 3:
     print("a is 7 and b is 3")
 
-a = 71
-print("a is 71") if a == 71 else print("a is something else")
+number5 = 71
+print("a is 71") if number5 == 71 else print("a is something else")
 
 ######
 # For loop
 
-words = ["machine", "learning", "in", "python"]
+words: list[str] = ["machine", "learning", "in", "python"]
 for word in words:
     print(word)
 print("--")
@@ -66,31 +74,32 @@ for number in range(2, 15, 3):
 ######
 # While loop
 
-i = 1
+i: int = 1
 while i < 6:
     print(i)
     i += 2
+
 
 ######
 # Functions
 
 
-def test(param1, param2=0):
+def test(param1: int | str, param2: int = 0) -> int:
     print(param1)
     print(param2)
     return param2 + 5
 
 
-result1 = test("aa")
+result1: int = test("aa")
 print(result1)
 print("--")
-result2 = test(14, 7)
+result2: int = test(14, 7)
 print(result2)
 
 ######
 # Imports
 
-import os  # In general code, this will be at the beginning of the file
+import os  # This will be at the beginning of the file in general code
 
 print(os.listdir())
 if not os.path.exists("test"):
@@ -103,7 +112,7 @@ print(os.listdir())
 ######
 # Lists
 
-x = [1, 2, 31]
+x: list[int | str] = [1, 2, 31]
 print(x)
 print(x[1])
 print(x[-1])
@@ -115,7 +124,7 @@ print(len(x))
 x.append("hello")
 print(x)
 
-value = x.pop()
+value: int | str = x.pop()
 print(value)
 print(x)
 
@@ -128,7 +137,7 @@ print(x)
 ######
 # Dictionaries
 
-japan = {
+japan: dict[str, str | int | list[str]] = {
     "name": "Japan",
     "short": "JP",
     "capital": "Tokyo",
@@ -139,7 +148,7 @@ print(japan)
 print(japan["name"])
 print(japan.keys())
 
-czechia = {
+czechia: dict[str, str | int | list[str]] = {
     "name": "Czechia",
     "short": "CZ",
     "capital": "Prague",
@@ -151,7 +160,7 @@ print(czechia)
 ######
 # Try-Catch-Finally
 
-y = [5, 7, 8]
+y: list[int] = [5, 7, 8]
 try:
     y.remove(10)
 except ValueError:

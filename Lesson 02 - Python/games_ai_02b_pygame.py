@@ -1,4 +1,6 @@
 import pygame
+from pygame import rect
+from pygame.surface import Surface
 
 
 def main():
@@ -6,21 +8,23 @@ def main():
     pygame.init()
 
     # Set the size of the window
-    size = width, height = 1280, 480
+    width: int = 1280
+    height: int = 480
+    size: tuple[int, int] = width, height
 
     # Set the speed of the ball (can be different for X and Y axis)
-    speed = [1, 1]
+    speed: list[int] = [1, 1]
 
     # Set the background color (RGB)
     # https://en.wikipedia.org/wiki/RGB_color_model
-    background_color = (50, 200, 50)  # 2^8 - 1 = 255
+    background_color: tuple[int, int, int] = (50, 200, 50)  # 2^8 - 1 = 255
 
     # Create the window
-    screen = pygame.display.set_mode(size)
+    screen: Surface = pygame.display.set_mode(size)
 
     # Load the ball image
-    ball = pygame.image.load("ball.png")
-    ball_rect = ball.get_rect()
+    ball: Surface = pygame.image.load("ball.png")
+    ball_rect: rect = ball.get_rect()
 
     # Main event loop
     while True:
@@ -30,7 +34,7 @@ def main():
                 pygame.quit()
 
         # Move the ball
-        ball_rect = ball_rect.move(speed)
+        ball_rect: rect = ball_rect.move(speed)
 
         # Bounce the ball off the walls
         if ball_rect.left < 0 or ball_rect.right > width:
