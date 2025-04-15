@@ -32,6 +32,10 @@ screen.fill(BACKGROUND_COLOR)
 # Tic Tac Toe board (3×3 matrix)
 board = [["" for _ in range(3)] for _ in range(3)]
 
+# 'X' '' ''
+# '' 'O' ''
+# '' '' ''
+
 # Define player and AI marks
 HUMAN = "O"
 AI = "X"
@@ -41,7 +45,7 @@ game_over = False
 winner = None
 current_player = HUMAN  # Human starts
 
-iterations = 0
+iterations_count = 0
 
 
 def draw_board():
@@ -117,9 +121,9 @@ def minimax(board_variant, depth, is_maximizing):
     :param is_maximizing: True if the AI is maximizing, False if the AI is minimizing (playing as the human)
     :return: The best score in context of the AI player
     """
-    global iterations
-    iterations = iterations + 1
-    print(f"depth: {depth}, is_maximizing: {is_maximizing}, board: {board_variant}, iterations: {iterations}")
+    global iterations_count
+    iterations_count = iterations_count + 1
+    print(f"depth: {depth}, is_maximizing: {is_maximizing}, board: {board_variant}, iterations: {iterations_count}")
 
     if check_win(AI):
         return 1
@@ -160,8 +164,8 @@ def ai_turn():
     """
     Determine the best move for the AI at the current game state
     """
-    global iterations
-    iterations = 0
+    global iterations_count
+    iterations_count = 0
     best_score = -math.inf
     move = [-1, -1]
     # Iterate over the board and determine the best move
@@ -176,7 +180,7 @@ def ai_turn():
                     best_score = score
                     move = [row, col]
 
-    print(f"number of iterations: {iterations}")
+    print(f"number of iterations: {iterations_count}")
     board[move[0]][move[1]] = AI
 
 
