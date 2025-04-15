@@ -41,7 +41,7 @@ game_over = False
 winner = None
 current_player = HUMAN  # Human starts
 
-iterations = 0
+iterations_count = 0
 
 
 def draw_board():
@@ -119,8 +119,8 @@ def minimax(board_variant, depth, is_maximizing):
     :param is_maximizing: True if the AI is maximizing, False if the AI is minimizing (playing as the human)
     :return: The best score in context of the AI player
     """
-    global iterations
-    iterations = iterations + 1
+    global iterations_count
+    iterations_count = iterations_count + 1
     print(f"depth: {depth}, is_maximizing: {is_maximizing}, board: {board_variant}, iterations: {iterations}")
 
     if check_win(AI):
@@ -202,8 +202,8 @@ def ai_turn():
     # 4 Other optimisations... TODO up to you
 
     # 5 Otherwise run Minimax if we have other situation
-    global iterations
-    iterations = 0
+    global iterations_count
+    iterations_count = 0
     best_score = -math.inf
     move = [-1, -1]
     # Iterate over the board and determine the best move
