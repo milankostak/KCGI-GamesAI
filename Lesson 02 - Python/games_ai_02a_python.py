@@ -39,27 +39,27 @@ print(f"{string1} and {string2}")
 
 number2: int = 5
 if number2 == 1:
-    print("a is 1")
+    print("number2 is 1")
 elif number2 == 2:
-    print("a is 2")
+    print("number2 is 2")
 else:
-    print("a is something else")
+    print("number2 is something else")
 
-if a == 1 or a == 2 or a == 3:
+if number2 == 1 or number2 == 2 or number2 == 3:
     print("a is 1 or 2 or 3")
 
-number3 = 7
-number4 = 3
+number3: int = 7
+number4: int = 3
 if number3 == 7 and number4 == 3:
-    print("a is 7 and b is 3")
+    print("number3 is 7 and number4 is 3")
 
-number5 = 71
-print("a is 71") if number5 == 71 else print("a is something else")
+number5: int = 71
+print("number5 is 71") if number5 == 71 else print("number5 is something else")
 
 ######
 # For loop
 
-words: list[str] = ["machine", "learning", "in", "python"]
+words: list[str] = ["games", "and", "artificial", "intelligence", "in", "python"]
 for word in words:
     print(word)
 print("--")
@@ -147,6 +147,7 @@ japan: dict[str, str | int | list[str]] = {
 print(japan)
 print(japan["name"])
 print(japan.keys())
+print(japan.values())
 
 czechia: dict[str, str | int | list[str]] = {
     "name": "Czechia",
@@ -163,7 +164,8 @@ print(czechia)
 y: list[int] = [5, 7, 8]
 try:
     y.remove(10)
-except ValueError:
+except ValueError as e:
+    print(e)
     print("Value of 10 is not in the list")
 finally:
     y.clear()

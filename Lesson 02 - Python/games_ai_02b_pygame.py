@@ -3,7 +3,7 @@ from pygame import rect
 from pygame.surface import Surface
 
 
-def main():
+def main() -> None:
     # Initialize Pygame
     pygame.init()
 
