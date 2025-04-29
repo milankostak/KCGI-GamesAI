@@ -1,4 +1,5 @@
 import pygame
+from pygame import Surface
 from pygame.font import Font
 from pygame.key import ScancodeWrapper
 
@@ -10,7 +11,7 @@ def main():
     # Screen dimensions
     screen_width: int = 900
     screen_height: int = 500
-    screen = pygame.display.set_mode(size=(screen_width, screen_height))
+    screen: Surface = pygame.display.set_mode(size=(screen_width, screen_height))
 
     # Colors
     background_color: tuple[int, int, int] = (40, 40, 40)  # dark grey
@@ -63,8 +64,8 @@ def main():
             ball_y_speed *= -1
 
         # Ball collisions with paddles
-        left_paddle_collision = (ball_x <= paddle_width) and (left_paddle_y < ball_y < left_paddle_y + paddle_height)
-        right_paddle_collision = (ball_x >= screen_width - paddle_width - ball_size) and \
+        left_paddle_collision: bool = (ball_x <= paddle_width) and (left_paddle_y < ball_y < left_paddle_y + paddle_height)
+        right_paddle_collision: bool = (ball_x >= screen_width - paddle_width - ball_size) and \
                                  (right_paddle_y < ball_y < right_paddle_y + paddle_height)
         if left_paddle_collision or right_paddle_collision:
             ball_x_speed *= -1
