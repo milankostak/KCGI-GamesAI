@@ -13,7 +13,7 @@ def main():
     screen = pygame.display.set_mode(size=(screen_width, screen_height))
 
     # Colors
-    background_color: tuple[int, int, int] = (40, 40, 40)  # dark gey
+    background_color: tuple[int, int, int] = (40, 40, 40)  # dark grey
     items_color: tuple[int, int, int] = (255, 220, 50)  # orange
 
     # Ball settings
