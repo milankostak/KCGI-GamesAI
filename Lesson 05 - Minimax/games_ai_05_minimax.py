@@ -207,11 +207,11 @@ def main_loop() -> None:
                 sys.exit()
 
             if event.type == MOUSEBUTTONDOWN and current_player == HUMAN:
-                mouse_x = event.pos[0]  # Column
-                mouse_y = event.pos[1]  # Row
+                mouse_x: int = event.pos[0]  # Column
+                mouse_y: int = event.pos[1]  # Row
 
-                clicked_row = int(mouse_y // CELL_HEIGHT)
-                clicked_col = int(mouse_x // CELL_WIDTH)
+                clicked_row: int = int(mouse_y // CELL_HEIGHT)
+                clicked_col: int = int(mouse_x // CELL_WIDTH)
 
                 # Check if this is a valid move - it must be an empty cell
                 if board[clicked_row][clicked_col] == "":
