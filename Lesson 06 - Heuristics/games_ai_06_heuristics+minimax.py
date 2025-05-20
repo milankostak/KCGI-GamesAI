@@ -72,6 +72,7 @@ def draw_marks() -> None:
                 # Draw O mark for human player
                 pygame.draw.circle(screen, O_COLOR, (center_x, center_y), int(min(CELL_WIDTH, CELL_HEIGHT) / 4), 5)
             elif board[row][col] == AI:
+                # Draw X mark for AI player
                 margin: int = int(min(CELL_WIDTH, CELL_HEIGHT) / 4)  # Margin from the cell borders
                 pygame.draw.line(
                     surface=screen,
