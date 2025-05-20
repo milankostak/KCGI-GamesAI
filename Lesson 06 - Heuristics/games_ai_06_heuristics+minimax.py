@@ -2,49 +2,50 @@ import math
 import sys
 
 import pygame
+from pygame import Surface
 from pygame.locals import *
 
 # Initialize Pygame
 pygame.init()
 
 # Screen size
-SCREEN_WIDTH = 400
-SCREEN_HEIGHT = 400
+SCREEN_WIDTH: int = 400
+SCREEN_HEIGHT: int = 400
 
-CELL_WIDTH = SCREEN_WIDTH / 3
-CELL_HEIGHT = SCREEN_HEIGHT / 3
+CELL_WIDTH: float = SCREEN_WIDTH / 3
+CELL_HEIGHT: float = SCREEN_HEIGHT / 3
 
 # Colors
-BACKGROUND_COLOR = (200, 200, 200)  # Light grey
-X_WIN_COLOR = (200, 150, 150)  # Red
-O_WIN_COLOR = (150, 150, 200)  # Blue
-DRAW_COLOR = (150, 150, 150)  # Gray
+BACKGROUND_COLOR: tuple[int, int, int] = (200, 200, 200)  # Light grey
+X_WIN_COLOR: tuple[int, int, int] = (200, 150, 150)  # Red
+O_WIN_COLOR: tuple[int, int, int] = (150, 150, 200)  # Blue
+DRAW_COLOR: tuple[int, int, int] = (150, 150, 150)  # Gray
 
-LINE_COLOR = (30, 30, 30)  # Dark grey
-X_COLOR = (200, 0, 0)  # Red
-O_COLOR = (0, 0, 200)  # Blue
+LINE_COLOR: tuple[int, int, int] = (30, 30, 30)  # Dark grey
+X_COLOR: tuple[int, int, int] = (200, 0, 0)  # Red
+O_COLOR: tuple[int, int, int] = (0, 0, 200)  # Blue
 
 # Screen setup
-screen = pygame.display.set_mode(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
+screen: Surface = pygame.display.set_mode(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Tic Tac Toe with Heuristics + Minimax AI")
 screen.fill(BACKGROUND_COLOR)
 
 # Tic Tac Toe board (3×3 matrix)
-board = [["" for _ in range(3)] for _ in range(3)]
+board: list[list[str]] = [["" for _ in range(3)] for _ in range(3)]
 
 # Define player and AI marks
-HUMAN = "O"
-AI = "X"
+HUMAN: str = "O"
+AI: str = "X"
 
 # Game states
-game_over = False
-winner = None
-current_player = HUMAN  # Human starts
+game_over: bool = False
+winner: str | None = None
+current_player: str = HUMAN  # Human starts
 
 iterations_count = 0
 
 
-def draw_board():
+def draw_board() -> None:
     """
     Draw the Tic Tac Toe board respectively to the screen size
     """
@@ -57,29 +58,38 @@ def draw_board():
     pygame.draw.line(screen, LINE_COLOR, (0, CELL_HEIGHT * 2), (SCREEN_WIDTH, CELL_HEIGHT * 2), 3)
 
 
-def draw_marks():
+def draw_marks() -> None:
     """
     Draw the marks (X or O) on the Tic Tac Toe board respectively to the current game state
     """
     for row in range(3):
         for col in range(3):
-            center_x = int(col * CELL_WIDTH + CELL_WIDTH / 2)
-            center_y = int(row * CELL_HEIGHT + CELL_HEIGHT / 2)
+            center_x: int = int(col * CELL_WIDTH + CELL_WIDTH / 2)
+            center_y: int = int(row * CELL_HEIGHT + CELL_HEIGHT / 2)
 
             # Fill in already made moves
             if board[row][col] == HUMAN:
                 # Draw O mark for human player
                 pygame.draw.circle(screen, O_COLOR, (center_x, center_y), int(min(CELL_WIDTH, CELL_HEIGHT) / 4), 5)
             elif board[row][col] == AI:
-                # Draw X mark for AI player
-                margin = int(min(CELL_WIDTH, CELL_HEIGHT) / 4)  # Margin from the cell borders
-                pygame.draw.line(screen, X_COLOR, (center_x - margin, center_y - margin),
-                                 (center_x + margin, center_y + margin), 5)
-                pygame.draw.line(screen, X_COLOR, (center_x + margin, center_y - margin),
-                                 (center_x - margin, center_y + margin), 5)
+                margin: int = int(min(CELL_WIDTH, CELL_HEIGHT) / 4)  # Margin from the cell borders
+                pygame.draw.line(
+                    surface=screen,
+                    color=X_COLOR,
+                    start_pos=(center_x - margin, center_y - margin),
+                    end_pos=(center_x + margin, center_y + margin),
+                    width=5,
+                )
+                pygame.draw.line(
+                    surface=screen,
+                    color=X_COLOR,
+                    start_pos=(center_x + margin, center_y - margin),
+                    end_pos=(center_x - margin, center_y + margin),
+                    width=5,
+                )
 
 
-def check_win(player):
+def check_win(player: str) -> bool:
     """
     Check rows, columns and diagonals for a win
     :param player: The player to check for a win
@@ -99,7 +109,7 @@ def check_win(player):
     return False
 
 
-def check_draw():
+def check_draw() -> bool:
     """
     Check if any board place is still empty, otherwise the game is a draw
     :return: True if the game is a draw, False otherwise
@@ -111,7 +121,7 @@ def check_draw():
     return True
 
 
-def minimax(board_variant, depth, is_maximizing):
+def minimax(board_variant: list[list[str]], depth: int, is_maximizing: bool) -> float:
     """
     Minimax algorithm to determine the best move for the AI
     :param board_variant: The current game state at the given depth
@@ -121,7 +131,7 @@ def minimax(board_variant, depth, is_maximizing):
     """
     global iterations_count
     iterations_count = iterations_count + 1
-    print(f"depth: {depth}, is_maximizing: {is_maximizing}, board: {board_variant}, iterations: {iterations}")
+    print(f"depth: {depth}, is_maximizing: {is_maximizing}, board: {board_variant}, iterations: {iterations_count}")
 
     if check_win(AI):
         return 1
@@ -158,7 +168,7 @@ def minimax(board_variant, depth, is_maximizing):
         return best_score
 
 
-def evaluate_move():
+def evaluate_move() -> tuple[int, int] | None:
     """
     Evaluate the board and return the best move for the AI based on a simple heuristic.
     :return: Tuple (row, col) indicating the best move
@@ -173,7 +183,7 @@ def evaluate_move():
     return None
 
 
-def ai_turn():
+def ai_turn() -> None:
     """
     Perform the AI's move using the heuristic evaluation
     """
@@ -218,7 +228,7 @@ def ai_turn():
                     best_score = score
                     move = [row, col]
 
-    print(f"number of iterations: {iterations}")
+    print(f"number of iterations: {iterations_count}")
     board[move[0]][move[1]] = AI
 
 
@@ -232,11 +242,11 @@ def main_loop():
                 sys.exit()
 
             if event.type == MOUSEBUTTONDOWN and current_player == HUMAN:
-                mouse_x = event.pos[0]  # Column
-                mouse_y = event.pos[1]  # Row
+                mouse_x: int = event.pos[0]  # Column
+                mouse_y: int = event.pos[1]  # Row
 
-                clicked_row = int(mouse_y // CELL_HEIGHT)
-                clicked_col = int(mouse_x // CELL_WIDTH)
+                clicked_row: int = int(mouse_y // CELL_HEIGHT)
+                clicked_col: int = int(mouse_x // CELL_WIDTH)
 
                 # Check if this is a valid move - it must be an empty cell
                 if board[clicked_row][clicked_col] == "":
