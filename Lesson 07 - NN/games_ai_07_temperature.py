@@ -101,22 +101,17 @@ plt.show()
 
 # make sure this value was NOT in the training
 celsius_test_value_float: float = 25.0
-celsius_test_value = np.array([celsius_test_value_float], dtype=np.float32)
+celsius_test_value: np.ndarray = np.array([celsius_test_value_float], dtype=np.float32)
 print("Predicted value:", model.predict(celsius_test_value))
 print("Correct value:", celsius_test_value[0] * 1.8 + 32)
 
 print("These are the neuron variables values:", model.layers[0].get_weights())
 
-celsius_test: np.ndarray = np.array([-45, -20, 5, 25, 40, 60])  # these values were NOT in the train set (very important!)
+celsius_test: np.ndarray = np.array([-45, -20, 5, 25, 40, 60], dtype=np.float32)  # these values were NOT in the train set (very important!)
 fahrenheit_true: np.ndarray = np.array([t * 1.8 + 32 for t in celsius_test])
-fahrenheit_predicted: np.ndarray = np.array([])
-error: list[float] = []
-# print(fahrenheit_true)
 
-for i, c in enumerate(celsius_test):
-    predicted = model.predict([np.array([c], dtype=np.float32)])
-    error.append(abs(predicted - fahrenheit_true[i]))
-    fahrenheit_predicted = np.append(fahrenheit_predicted, predicted)
+fahrenheit_predicted: np.ndarray = model.predict(celsius_test).flatten()
+error: np.ndarray = np.abs(fahrenheit_predicted - fahrenheit_true)
 
 print("Correct values:", fahrenheit_true)
 print("Predicted values:", fahrenheit_predicted)
