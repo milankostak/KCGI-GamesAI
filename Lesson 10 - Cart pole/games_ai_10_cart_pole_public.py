@@ -28,7 +28,7 @@ gamma = 0.95  # Discount factor
 scores = []
 
 # Training loop
-for e in range(episodes):
+for episode in range(episodes):
     # Reset the environment to a new random initial state
     state = env.reset()
     # Reshape the state to a format that can be fed to the model
@@ -48,7 +48,7 @@ for e in range(episodes):
         # The model predicts the Q-values for the current state.
         # Q-values represent the model's estimate of the total reward that can be obtained,
         # starting from the current state and taking each possible action.
-        prediction = model.predict(state, verbose=0)
+        prediction = model.predict(state, verbose=False)
 
         # Select the model's predicted action with the highest Q-value
         q_values = prediction[0]  # This is numpy array [[ a b ]] so we need [0]
@@ -73,7 +73,7 @@ for e in range(episodes):
         if terminated:
             target = reward
         else:
-            future_prediction = model.predict(next_state, verbose=0)
+            future_prediction = model.predict(next_state, verbose=False)
             # print("future_prediction", future_prediction)
             max_future_prediction = np.amax(future_prediction[0])
             # print("max_future_prediction", max_future_prediction)
@@ -86,16 +86,16 @@ for e in range(episodes):
         target_f[0][action] = target
         # print("target_f", target_f)
 
-        model.fit(state, target_f, epochs=1, verbose=0)
+        model.fit(state, target_f, epochs=1, verbose=False)
 
         state = next_state
         time += 1
 
-    print(f"Episode: {e + 1}/{episodes}, Score: {time}")
+    print(f"Episode: {episode + 1}/{episodes}, Score: {time}")
 
     scores.append(time)
     if len(scores) % 10 == 0:
-        print(f"Episode: {e + 1}/{episodes}, Score: {time}, Average score over the last 10 episodes: {np.mean(scores[-10:])}")
+        print(f"Episode: {episode + 1}/{episodes}, Score: {time}, Average score over the last 10 episodes: {np.mean(scores[-10:])}")
         plt.plot(scores)
         plt.xlabel("Episode")
         plt.ylabel("Score")
