@@ -20,7 +20,7 @@ response = client.images.generate(
 
 print(response)
 
-pretty_json = json.dumps(json.loads(response.json()), indent=2)
+pretty_json = json.dumps(json.loads(response.model_dump_json()), indent=2)
 print(pretty_json)
 
 # image_url = response.data[0].url

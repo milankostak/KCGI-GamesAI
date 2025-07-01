@@ -12,7 +12,7 @@ response = client.chat.completions.create(
     # max_tokens=1000,  # maximum number of tokens to generate
     # stop=["and"],     # stop the generation when the token is generated
     messages=[
-        {"role": "system", "content": "You are a helpful assistant knowledgeable about the application of machine learning in video games."},
+        {"role": "system", "content": "You are a helpful assistant knowledgeable about the application of machine learning in video games. You provide explanation to a university student."},
         {"role": "user", "content": "Can you explain how reinforcement learning is used in video games?"},
         {"role": "assistant", "content": "Certainly! Reinforcement learning (RL) is used in video games to train AI agents to make decisions by rewarding desired actions and penalizing undesirable ones. For example, in a game like 'StarCraft II', RL can be used to train AI agents to execute complex strategies based on the state of the game. The AI learns through trial and error, gradually improving its strategy to maximize rewards, which could be points, victories, or achieving specific objectives within the game."},
         {"role": "user", "content": "What's a real-world example of a game that uses RL?"},
@@ -20,5 +20,5 @@ response = client.chat.completions.create(
 )
 print(response)
 
-pretty_json = json.dumps(json.loads(response.json()), indent=2)
+pretty_json = json.dumps(json.loads(response.model_dump_json()), indent=2)
 print(pretty_json)

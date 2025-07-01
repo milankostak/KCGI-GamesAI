@@ -1,4 +1,5 @@
 import base64
+import json
 
 import requests
 from openai import OpenAI
@@ -42,5 +43,7 @@ payload = {
 }
 
 response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-
 print(response.json())
+
+pretty_json = json.dumps(response.json(), indent=2)
+print(pretty_json)

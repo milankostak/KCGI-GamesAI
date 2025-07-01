@@ -8,6 +8,6 @@ speech_file_path = "speech.mp3"
 with client.audio.speech.with_streaming_response.create(
     model="tts-1",
     voice="alloy",
-    input="Today is a wonderful day to build something using OpenAI API!"
+    input="Today is a wonderful day to build something using LLM API!"
 ) as response:
     response.stream_to_file(speech_file_path)
