@@ -141,7 +141,7 @@ japan: dict[str, str | int | list[str]] = {
     "name": "Japan",
     "short": "JP",
     "capital": "Tokyo",
-    "population": 123_900_000,
+    "population": 123_400_000,
     "neighbors": []
 }
 print(japan)
