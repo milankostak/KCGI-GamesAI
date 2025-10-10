@@ -4,7 +4,7 @@ channels:
  - defaults
 dependencies:
 # https://devguide.python.org/versions/
- - python ==3.13.3
+ - python ==3.13.7
 
 # https://pypi.org/project/pygame/
  - pygame ==2.6.1
