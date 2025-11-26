@@ -1,5 +1,5 @@
 import pygame
-from pygame import rect
+from pygame.rect import Rect
 from pygame.surface import Surface
 
 
@@ -24,7 +24,7 @@ def main() -> None:
 
     # Load the ball image
     ball: Surface = pygame.image.load("ball.png")
-    ball_rect: rect = ball.get_rect()
+    ball_rect: Rect = ball.get_rect()
 
     # Main event loop
     while True:
@@ -34,7 +34,7 @@ def main() -> None:
                 pygame.quit()
 
         # Move the ball
-        ball_rect: rect = ball_rect.move(speed)
+        ball_rect = ball_rect.move(speed)
 
         # Bounce the ball off the walls
         if ball_rect.left < 0 or ball_rect.right > width:
