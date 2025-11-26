@@ -72,6 +72,7 @@ def main():
 
         # Scoring
         if ball_x < 0 or ball_x > screen_width:
+            # Reset the ball
             ball_x, ball_y = (screen_width // 2) - (ball_size // 2), (screen_height // 2) - (ball_size // 2)
 
         # Drawing
