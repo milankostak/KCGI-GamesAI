@@ -1,4 +1,4 @@
-name: kcgi-gamesai
+name: kcgi-games-ai
 channels:
  - conda-forge
  - defaults
