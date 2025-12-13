@@ -5,7 +5,7 @@ from openai import OpenAI
 api_key = "openai_api_key_here"
 client = OpenAI(api_key=api_key)
 
-# https://platform.openai.com/docs/guides/text-generation
+# https://platform.openai.com/docs/guides/text
 response = client.chat.completions.create(
     model="gpt-4o",
     # temperature=0.7,  # 0.0 is deterministic, 2.0 is maximum entropy, 1.0 is the default value

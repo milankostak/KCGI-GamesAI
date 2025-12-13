@@ -5,7 +5,7 @@ from openai import OpenAI
 api_key = "openai_api_key_here"
 client = OpenAI(api_key=api_key)
 
-# https://platform.openai.com/docs/guides/images
+# https://platform.openai.com/docs/guides/image-generation?api=image
 response = client.images.generate(
     model="dall-e-3",
     prompt="Games and Artificial Intelligence",

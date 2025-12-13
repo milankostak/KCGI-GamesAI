@@ -1,7 +1,6 @@
 import base64
 import json
 
-import requests
 from openai import OpenAI
 
 api_key = "openai_api_key_here"
@@ -14,36 +13,26 @@ def encode_image(image_path):
 
 
 base64_image = encode_image("img.png")
-headers = {
-    "Content-Type": "application/json",
-    "Authorization": f"Bearer {api_key}"
-}
 
-# https://platform.openai.com/docs/guides/vision
-payload = {
-    "model": "gpt-4o",
-    "messages": [
+# https://platform.openai.com/docs/guides/images-vision?format=base64-encoded
+# noinspection PyTypeChecker
+response = client.responses.create(
+    model="gpt-4o",
+    input=[
         {
             "role": "user",
             "content": [
+                {"type": "input_text", "text": "what's in this image?"},
                 {
-                    "type": "text",
-                    "text": "What’s in this image?"
+                    "type": "input_image",
+                    "image_url": f"data:image/jpeg;base64,{base64_image}",
                 },
-                {
-                    "type": "image_url",
-                    "image_url": {
-                        "url": f"data:image/jpeg;base64,{base64_image}"
-                    }
-                }
-            ]
+            ],
         }
     ],
-    "max_tokens": 300
-}
+)
 
-response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-print(response.json())
+print(response)
 
-pretty_json = json.dumps(response.json(), indent=2)
+pretty_json = json.dumps(json.loads(response.model_dump_json()), indent=2)
 print(pretty_json)

@@ -6,6 +6,7 @@ api_key = "anthropic_api_key_here"
 client = Anthropic(api_key=api_key)
 
 # https://platform.claude.com/docs/en/api/overview#client-sdks
+# noinspection PyTypeChecker
 message = client.messages.create(
     model="claude-sonnet-4-5",
     temperature=0.7,  # 0.0 is deterministic, 1.0 is maximum entropy
