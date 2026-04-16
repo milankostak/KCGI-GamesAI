@@ -32,6 +32,7 @@ string1: str = "Tokyo"
 string2: str = "Kyoto"
 string3: str = string1 + string2
 print(string3)
+print("{string1} and {string2}")
 print(f"{string1} and {string2}")
 
 ######
@@ -141,7 +142,7 @@ japan: dict[str, str | int | list[str]] = {
     "name": "Japan",
     "short": "JP",
     "capital": "Tokyo",
-    "population": 123_400_000,
+    "population": 122_600_000,
     "neighbors": []
 }
 print(japan)
