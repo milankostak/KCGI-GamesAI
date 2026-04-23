@@ -64,9 +64,10 @@ def main():
             ball_y_speed *= -1
 
         # Ball collisions with paddles
-        left_paddle_collision: bool = (ball_x <= paddle_width) and (left_paddle_y < ball_y < left_paddle_y + paddle_height)
+        left_paddle_collision: bool = (ball_x <= paddle_width) and \
+                                      (left_paddle_y < ball_y < left_paddle_y + paddle_height)
         right_paddle_collision: bool = (ball_x >= screen_width - paddle_width - ball_size) and \
-                                 (right_paddle_y < ball_y < right_paddle_y + paddle_height)
+                                       (right_paddle_y < ball_y < right_paddle_y + paddle_height)
         if left_paddle_collision or right_paddle_collision:
             ball_x_speed *= -1
 
@@ -98,6 +99,7 @@ def main():
         pygame.display.flip()
         pygame.time.Clock().tick(60)  # FPS
 
+    # Cleanup up when running is False
     pygame.quit()
 
 
