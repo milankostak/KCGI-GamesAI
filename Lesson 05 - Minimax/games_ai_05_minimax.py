@@ -3,7 +3,7 @@ import sys
 
 import pygame
 from pygame import Surface
-from pygame.locals import *
+from pygame.locals import KEYDOWN, MOUSEBUTTONDOWN, QUIT
 
 # Initialize Pygame
 pygame.init()
@@ -16,12 +16,12 @@ CELL_WIDTH: float = SCREEN_WIDTH / 3
 CELL_HEIGHT: float = SCREEN_HEIGHT / 3
 
 # Colors
-BACKGROUND_COLOR: tuple[int, int, int] = (200, 200, 200)  # Light grey
+BACKGROUND_COLOR: tuple[int, int, int] = (200, 200, 200)  # Light gray
 X_WIN_COLOR: tuple[int, int, int] = (200, 150, 150)  # Red
 O_WIN_COLOR: tuple[int, int, int] = (150, 150, 200)  # Blue
 DRAW_COLOR: tuple[int, int, int] = (150, 150, 150)  # Gray
 
-LINE_COLOR: tuple[int, int, int] = (30, 30, 30)  # Dark grey
+LINE_COLOR: tuple[int, int, int] = (30, 30, 30)  # Dark gray
 X_COLOR: tuple[int, int, int] = (200, 0, 0)  # Red
 O_COLOR: tuple[int, int, int] = (0, 0, 200)  # Blue
 
