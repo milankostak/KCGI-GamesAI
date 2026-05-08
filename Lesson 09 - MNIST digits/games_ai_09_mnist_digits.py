@@ -15,48 +15,57 @@ import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 
-from tensorflow.keras.datasets import mnist
+from keras.datasets import mnist
 
 print(tf.version.VERSION)
 print(np.version.version)
 
 # Load data set
-(train_x, train_y), (test_x, test_y) = mnist.load_data()
+(train_x_original, train_y_original), (test_x_original, test_y_original) = mnist.load_data()
 
 # Shape of data (count, width, height)
-print("train_x shape", train_x.shape)
-print("train_y shape", train_y.shape)
-print("test_x shape", test_x.shape)
-print("test_y shape", test_y.shape)
+print(f"train_x_original shape {train_x_original.shape}")
+print(f"train_y_original shape {train_y_original.shape}")
+print(f"test_x_original shape {test_x_original.shape}")
+print(f"test_y_original shape {test_y_original.shape}")
 
 # Actual numeric values
-print(train_y)
+print(train_y_original)
 
 # Keras is expecting 4-dimensional array (samples, X, Y, channels)
 # It would actually add the 4th dimension of 1 automatically for us (try disabling it) (depends on the version of TF)
-train_x: np.ndarray = train_x.reshape((train_x.shape[0], 28, 28, 1))
-test_x: np.ndarray = test_x.reshape((test_x.shape[0], 28, 28, 1))
+train_x: np.ndarray = train_x_original.reshape((60000, 28, 28, 1))
+test_x: np.ndarray = test_x_original.reshape((10000, 28, 28, 1))
 print("After reshaping:")
-print("train_x shape", train_x.shape)
-print("test_x shape", test_x.shape)
+print(f"train_x shape {train_x.shape}")
+print(f"test_x shape {test_x.shape}")
+
+print(train_x_original[0][12][12])
+print(train_x_original.dtype)
 
 print(train_x[0][12][12])
+print(train_x.dtype)
 
-# RGB values are currently in the range of 0-255
+print(train_x[0][12][12][0])
+print(train_x.dtype)
+
+# Image (gray) values are currently in the range of 0-255
 # Neural networks usually have better learning performance when dealing with pixel values between 0 and 1
 # The process is called normalization
 
 # Firstly, convert the intensities to floats
-train_x: np.ndarray = train_x.astype(float)
-test_x: np.ndarray = test_x.astype(float)
+train_x_float: np.ndarray = train_x.astype(float)
+test_x_float: np.ndarray = test_x.astype(float)
 
-print(train_x[0][12][12])
+print(train_x_float[0][12][12])
+print(train_x_float.dtype)
 
 # Then divide all values by 255
-train_x /= 255
-test_x /= 255
+train_x_norm: np.ndarray = train_x_float / 255
+test_x_norm: np.ndarray = test_x_float / 255
 
-print(train_x[0][12][12])
+print(train_x_norm[0][12][12])
+print(train_x_norm.dtype)
 
 def plot_init(images: np.ndarray, labels: np.ndarray) -> None:
     plt.figure(figsize=(20, 7))
@@ -71,7 +80,7 @@ def plot_init(images: np.ndarray, labels: np.ndarray) -> None:
 
 
 # It is advisable to always check the loaded data
-plot_init(train_x, train_y)
+plot_init(train_x_norm, train_y_original)
 
 # Let's start with a simple model
 
@@ -93,6 +102,8 @@ model = tf.keras.Sequential([
 # Summary of the network layers and its parameters
 model.summary()
 
+784 * 300 + 300
+
 model.compile(
     # optimizer="adam",
     optimizer=tf.keras.optimizers.Adam(),
@@ -100,7 +111,7 @@ model.compile(
     # optimizer=tf.train.AdamOptimizer(),
     # optimizer=tf.train.GradientDescentOptimizer(learning_rate=0.01),
     loss="sparse_categorical_crossentropy",
-    metrics=["accuracy"]
+    metrics=["accuracy"],
 )
 
 # Batch size determines how often to perform backpropagation
@@ -108,10 +119,10 @@ model.compile(
 BATCH_SIZE: int = 1000
 
 # Train the neural network for 5 epochs - run through the train data 5 times
-model.fit(x=train_x, y=train_y, epochs=5, batch_size=BATCH_SIZE)
+model.fit(x=train_x_norm, y=train_y_original, epochs=5, batch_size=BATCH_SIZE)
 
 # Evaluate the model on test data set
-test_loss, test_accuracy = model.evaluate(x=test_x, y=test_y, steps=1, verbose=False)
+test_loss, test_accuracy = model.evaluate(x=test_x_norm, y=test_y_original, steps=1, verbose=False)
 print("Loss on the test set:", test_loss)
 print("Accuracy on the test set:", test_accuracy)
 
@@ -166,11 +177,11 @@ def plot_result(predictions: np.ndarray, test_images: np.ndarray, test_labels: n
     plt.show()
 
 # Predicting on the test set
-predicted_y: np.ndarray = model.predict(test_x)
+predicted_y: np.ndarray = model.predict(test_x_norm)
 
 # Plotting the predicted values
 # Correct predictions in blue. Incorrect predictions in red.
-plot_result(predicted_y, test_x, test_y)  # test_y is true y
+plot_result(predicted_y, test_x_norm, test_y_original)  # test_y_original is true y
 
 def plot_wrong_predictions(predictions: np.ndarray, test_images: np.ndarray, test_labels: np.ndarray, offset: int = 0):
     i: int = 0
@@ -203,7 +214,7 @@ def plot_wrong_predictions(predictions: np.ndarray, test_images: np.ndarray, tes
 
 # Plotting only wrong predictions - skipping the correct ones
 # Very useful when already having a good model and trying to figure out which values are problematic
-plot_wrong_predictions(predicted_y, test_x, test_y)
+plot_wrong_predictions(predicted_y, test_x_norm, test_y_original)
 
 # And now the most interesting part:
 # For our model, the whole world consists of digits of values from 0 to 9.
@@ -256,28 +267,28 @@ plot_result(predicted_y, cross, np.array([0]))
 # Let's look at confusion matrix data for classification of number 7
 
 # The target digit, any digit from 0 to 9
-digit = 0
+digit: int = 7
 
 # Get predicted classes
-test_pred_classes = np.argmax(model.predict(test_x), axis=1)
+test_pred_classes: np.ndarray = np.argmax(model.predict(test_x), axis=1)
 
 # True Positive: predicted digit and is actually digit
-TP = np.sum((test_pred_classes == digit) & (test_y == digit))
+TP: int = np.sum((test_pred_classes == digit) & (test_y_original == digit)).item()
 
 # False Positive: predicted digit, actually something else
-FP = np.sum((test_pred_classes == digit) & (test_y != digit))
+FP: int = np.sum((test_pred_classes == digit) & (test_y_original != digit)).item()
 
 # False Negative: predicted something else, actually digit
-FN = np.sum((test_pred_classes != digit) & (test_y == digit))
+FN: int = np.sum((test_pred_classes != digit) & (test_y_original == digit)).item()
 
 # True Negative: predicted something else, actually something else
-TN = np.sum((test_pred_classes != digit) & (test_y != digit))
+TN: int = np.sum((test_pred_classes != digit) & (test_y_original != digit)).item()
 
 # Calculate metrics (with small value to avoid zero division)
-accuracy = (TP + TN) / (TP + FP + TN + FN)
-precision = TP / (TP + FP)
-recall = TP / (TP + FN)
-f1_score = 2 * (precision * recall) / (precision + recall)
+accuracy: float = (TP + TN) / (TP + FP + TN + FN)
+precision: float = TP / (TP + FP)
+recall: float = TP / (TP + FN)
+f1_score: float = 2 * (precision * recall) / (precision + recall)
 
 print(f"Digit: {digit}")
 print(f"TP: {TP}, FP: {FP}, FN: {FN}, TN: {TN}")
