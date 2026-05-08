@@ -145,8 +145,9 @@ def minimax(board_variant: list[list[str]], depth: int, is_maximizing: bool) -> 
     if check_draw():
         return 0
 
+    best_score: float
     if is_maximizing:
-        best_score: float = -math.inf
+        best_score = -math.inf
         for row in range(3):
             for col in range(3):
                 # Check if cell is available
@@ -159,7 +160,7 @@ def minimax(board_variant: list[list[str]], depth: int, is_maximizing: bool) -> 
         # print(f"return best_score max: {best_score}, depth: {depth}")
         return best_score
     else:
-        best_score: float = math.inf
+        best_score = math.inf
         for row in range(3):
             for col in range(3):
                 # Check if cell is available
@@ -180,18 +181,18 @@ def ai_turn() -> None:
     global iterations_count
     iterations_count = 0
     best_score: float = -math.inf
-    move: list[int] = [-1, -1]
+    move: tuple[int, int] = (-1, -1)
     # Iterate over the board and determine the best move
     for row in range(3):
         for col in range(3):
             # Check if cell is available
             if board[row][col] == "":
                 board[row][col] = AI  # Simulate the move
-                score = minimax(board, 0, False)
+                score: float = minimax(board, 0, False)
                 board[row][col] = ""  # Undo the move
                 if score > best_score:
                     best_score = score
-                    move = [row, col]
+                    move = (row, col)
 
     print(f"number of iterations: {iterations_count}")
     board[move[0]][move[1]] = AI
