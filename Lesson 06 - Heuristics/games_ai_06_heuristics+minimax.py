@@ -3,7 +3,7 @@ import sys
 
 import pygame
 from pygame import Surface
-from pygame.locals import *
+from pygame.locals import KEYDOWN, MOUSEBUTTONDOWN, QUIT
 
 # Initialize Pygame
 pygame.init()
@@ -16,12 +16,12 @@ CELL_WIDTH: float = SCREEN_WIDTH / 3
 CELL_HEIGHT: float = SCREEN_HEIGHT / 3
 
 # Colors
-BACKGROUND_COLOR: tuple[int, int, int] = (200, 200, 200)  # Light grey
+BACKGROUND_COLOR: tuple[int, int, int] = (200, 200, 200)  # Light gray
 X_WIN_COLOR: tuple[int, int, int] = (200, 150, 150)  # Red
 O_WIN_COLOR: tuple[int, int, int] = (150, 150, 200)  # Blue
 DRAW_COLOR: tuple[int, int, int] = (150, 150, 150)  # Gray
 
-LINE_COLOR: tuple[int, int, int] = (30, 30, 30)  # Dark grey
+LINE_COLOR: tuple[int, int, int] = (30, 30, 30)  # Dark gray
 X_COLOR: tuple[int, int, int] = (200, 0, 0)  # Red
 O_COLOR: tuple[int, int, int] = (0, 0, 200)  # Blue
 
@@ -33,6 +33,10 @@ screen.fill(BACKGROUND_COLOR)
 # Tic Tac Toe board (3×3 matrix)
 board: list[list[str]] = [["" for _ in range(3)] for _ in range(3)]
 
+# 'X' '' ''
+# '' 'O' ''
+# '' '' ''
+
 # Define player and AI marks
 HUMAN: str = "O"
 AI: str = "X"
@@ -42,7 +46,7 @@ game_over: bool = False
 winner: str | None = None
 current_player: str = HUMAN  # Human starts
 
-iterations_count = 0
+iterations_count: int = 0
 
 
 def draw_board() -> None:
@@ -141,6 +145,7 @@ def minimax(board_variant: list[list[str]], depth: int, is_maximizing: bool) -> 
     if check_draw():
         return 0
 
+    best_score: float
     if is_maximizing:
         best_score = -math.inf
         for row in range(3):
@@ -191,7 +196,7 @@ def ai_turn() -> None:
     # 1 If the board is empty, take the center
     # TODO
 
-    # 2 Prioritize winning moves
+    # 2 Prioritize winning moves, i.e. if you can win, go ahead and win
     for row in range(3):
         for col in range(3):
             if board[row][col] == "":  # If the cell is empty
@@ -215,25 +220,25 @@ def ai_turn() -> None:
     # 5 Otherwise run Minimax if we have other situation
     global iterations_count
     iterations_count = 0
-    best_score = -math.inf
-    move = [-1, -1]
+    best_score: float = -math.inf
+    move: tuple[int, int] = (-1, -1)
     # Iterate over the board and determine the best move
     for row in range(3):
         for col in range(3):
             # Check if cell is available
             if board[row][col] == "":
                 board[row][col] = AI  # Simulate the move
-                score = minimax(board, 0, False)
+                score: float = minimax(board, 0, False)
                 board[row][col] = ""  # Undo the move
                 if score > best_score:
                     best_score = score
-                    move = [row, col]
+                    move = (row, col)
 
     print(f"number of iterations: {iterations_count}")
     board[move[0]][move[1]] = AI
 
 
-def main_loop():
+def main_loop() -> None:
     global game_over, current_player, winner
 
     while not game_over:

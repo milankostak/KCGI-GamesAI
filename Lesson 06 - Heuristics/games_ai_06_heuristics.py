@@ -2,7 +2,7 @@ import sys
 
 import pygame
 from pygame import Surface
-from pygame.locals import *
+from pygame.locals import KEYDOWN, MOUSEBUTTONDOWN, QUIT
 
 # Initialize Pygame
 pygame.init()
@@ -15,12 +15,12 @@ CELL_WIDTH: float = SCREEN_WIDTH / 3
 CELL_HEIGHT: float = SCREEN_HEIGHT / 3
 
 # Colors
-BACKGROUND_COLOR: tuple[int, int, int] = (200, 200, 200)  # Light grey
+BACKGROUND_COLOR: tuple[int, int, int] = (200, 200, 200)  # Light gray
 X_WIN_COLOR: tuple[int, int, int] = (200, 150, 150)  # Red
 O_WIN_COLOR: tuple[int, int, int] = (150, 150, 200)  # Blue
 DRAW_COLOR: tuple[int, int, int] = (150, 150, 150)  # Gray
 
-LINE_COLOR: tuple[int, int, int] = (30, 30, 30)  # Dark grey
+LINE_COLOR: tuple[int, int, int] = (30, 30, 30)  # Dark gray
 X_COLOR: tuple[int, int, int] = (200, 0, 0)  # Red
 O_COLOR: tuple[int, int, int] = (0, 0, 200)  # Blue
 
@@ -31,6 +31,10 @@ screen.fill(BACKGROUND_COLOR)
 
 # Tic Tac Toe board (3×3 matrix)
 board: list[list[str]] = [["" for _ in range(3)] for _ in range(3)]
+
+# 'X' '' ''
+# '' 'O' ''
+# '' '' ''
 
 # Define player and AI marks
 HUMAN: str = "O"
@@ -69,6 +73,7 @@ def draw_marks() -> None:
                 # Draw O mark for human player
                 pygame.draw.circle(screen, O_COLOR, (center_x, center_y), int(min(CELL_WIDTH, CELL_HEIGHT) / 4), 5)
             elif board[row][col] == AI:
+                # Draw X mark for AI player
                 margin: int = int(min(CELL_WIDTH, CELL_HEIGHT) / 4)  # Margin from the cell borders
                 pygame.draw.line(
                     surface=screen,
@@ -164,6 +169,9 @@ def evaluate_move() -> tuple[int, int] | None:
             if board[row][col] == "":  # If the cell is empty
                 return row, col
 
+    # It should never get here
+    return None
+
 
 def ai_turn() -> None:
     """
@@ -203,10 +211,10 @@ def main_loop() -> None:
 
         if current_player == AI and not game_over:
             ai_turn()
-            current_player = HUMAN
             if check_win(AI):
                 game_over = True
                 winner = AI
+            current_player = HUMAN
 
         if winner == HUMAN:
             screen.fill(O_WIN_COLOR)
