@@ -26,7 +26,7 @@ X_COLOR: tuple[int, int, int] = (200, 0, 0)  # Red
 O_COLOR: tuple[int, int, int] = (0, 0, 200)  # Blue
 
 # Screen setup
-screen: Surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen: Surface = pygame.display.set_mode(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Tic Tac Toe with Minimax AI")
 screen.fill(BACKGROUND_COLOR)
 
