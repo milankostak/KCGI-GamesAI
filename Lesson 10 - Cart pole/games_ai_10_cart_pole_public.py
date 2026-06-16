@@ -2,8 +2,9 @@ import gymnasium as gym
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
+
 from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras.layers import Dense, Input
 from tensorflow.keras.losses import MeanSquaredError
 from tensorflow.keras.optimizers import Adam
 
@@ -11,18 +12,23 @@ from tensorflow.keras.optimizers import Adam
 env = gym.make("CartPole-v1", render_mode="human")
 
 # Get the size of state and action spaces
-n_states: int = env.observation_space.shape[0]
+observation_space_shape: None | tuple[int, ...] = env.observation_space.shape
+assert observation_space_shape is not None
+n_states: int = observation_space_shape[0]
 print(f"n_states = {n_states}")
-n_actions: int = env.action_space.__dict__["n"]
+n_actions: int = env.action_space.__dict__["n"].item()
 print(f"n_actions = {n_actions}")
 
 # Build a simple neural network model
 model = Sequential()
 model.add(Input(shape=(n_states,)))
-model.add(Dense(24, activation=tf.nn.relu))
-model.add(Dense(24, activation=tf.nn.relu))
-model.add(Dense(n_actions, activation="linear"))  # no activation function
-model.compile(loss=MeanSquaredError(), optimizer=Adam(learning_rate=0.001))
+model.add(Dense(units=24, activation=tf.nn.relu))
+model.add(Dense(units=24, activation=tf.nn.relu))
+model.add(Dense(units=n_actions, activation="linear"))  # no activation function
+
+model.compile(loss=MeanSquaredError(), optimizer=Adam(learning_rate=0.001))  # faster learning
+
+print(model.summary())
 
 # Parameters
 episodes: int = 2000
@@ -50,7 +56,7 @@ for episode in range(episodes):
         # The model predicts the Q-values for the current state.
         # Q-values represent the model's estimate of the total reward that can be obtained,
         # starting from the current state and taking each possible action.
-        prediction: np.ndarray = model.predict(state, verbose=False)
+        prediction: np.ndarray = model(state, training=False).numpy()
 
         # Select the model's predicted action with the highest Q-value
         q_values: np.ndarray = prediction[0]  # This is numpy array [[ a b ]] so we need [0]
@@ -65,7 +71,7 @@ for episode in range(episodes):
         # Get the next state, the reward received for taking the action, and whether the episode has ended.
         # The extra underscore absorbs additional value returned by env.step() that are not used here.
         next_state, reward, terminated, truncated, _ = env.step(action)
-        reward: float = reward.__float__()
+        reward: float = float(reward)
         # print(f"reward = {reward}")  # Always 1.0 in CartPole-v1
         # print(f"terminated = {terminated}")  # Happens when the pole falls or the cart goes out of bounds
         # print(f"truncated = {truncated}")  # Happens when time/score of 500 is reached
@@ -77,14 +83,14 @@ for episode in range(episodes):
         if terminated:
             target = reward
         else:
-            future_prediction: np.ndarray = model.predict(next_state, verbose=False)
+            future_prediction: np.ndarray = model(next_state, training=False).numpy()
             # print(f"future_prediction = {future_prediction}")
             max_future_prediction: float = np.amax(future_prediction[0])
             # print(f"max_future_prediction = {max_future_prediction}")
             target = reward + gamma * max_future_prediction
         # print(f"target = {target}")
 
-        target_f: np.ndarray = prediction
+        target_f: np.ndarray = prediction.copy()
         # print(f"target_f = {target_f}")
 
         target_f[0][action] = target
@@ -102,6 +108,7 @@ for episode in range(episodes):
     if len(scores) % 10 == 0:
         mean_value: float = np.mean(scores[-10:]).item()
         print(f"Episode: {episodes_string}, Score: {time}, Average score over the last 10 episodes: {mean_value}")
+        plt.clf()
         plt.plot(scores)
         plt.xlabel("Episode")
         plt.ylabel("Score")
@@ -110,9 +117,9 @@ for episode in range(episodes):
         plt.pause(0.1)
 
 if len(scores) > 100:
-    print(f"Average score over the last 100 episodes: {np.mean(scores[-100:])}")
+    print(f"Average score over the last 100 episodes: {np.mean(scores[-100:]).item()}")
 else:
-    print(f"Average score: {np.mean(scores)}")
+    print(f"Average score: {np.mean(scores).item()}")
 
 print("Training finished. Rendering some test episodes...")
 
@@ -123,7 +130,7 @@ for test_episode in range(5):
     time: int = 0
 
     while not terminated:
-        q_values: np.ndarray = model.predict(state_test, verbose=False)[0]
+        q_values: np.ndarray = model(state_test, training=False).numpy()[0]
         action = np.argmax(q_values).item()
         next_state, reward, terminated, _, _ = env.step(action)
         next_state = np.reshape(next_state, [1, n_states])
