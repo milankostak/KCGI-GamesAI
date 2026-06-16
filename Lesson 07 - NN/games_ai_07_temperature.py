@@ -22,28 +22,28 @@ import matplotlib.pyplot as plt
 print(tf.version.VERSION)
 print(np.version.version)
 
-# to ensure reproducible results (good for testing, not good for production)
+# To ensure reproducible results (good for testing, not good for production)
 # RANDOM_SEED: int = 42
 
 # np.random.seed(RANDOM_SEED)
 # tf.random.set_seed(RANDOM_SEED)
 
-# generate train data
+# Generate train data
 celsius: np.ndarray = np.array([-30, -25, -10, 0, 10, 20, 35, 50, 70, 100], dtype=np.float32)
 
-# the right outputs for the train data
-# (usually you will not calculate those in runtime, but they will be provided in the dataset)
-fahrenheit: list[np.float32] = [t * 1.8 + 32 for t in celsius]
-print(fahrenheit)
+# The right outputs for the train data
+# (Generally, you will not calculate those in runtime but they will be provided in the dataset)
+fahrenheit_list: list[np.float32] = [t * 1.8 + 32 for t in celsius]
+print(fahrenheit_list)
 
-# needs to be a numpy array
-fahrenheit: np.ndarray = np.array(fahrenheit, dtype=np.float32)
+# Needs to be a numpy array
+fahrenheit: np.ndarray = np.array(fahrenheit_list, dtype=np.float32)
 
 print(celsius)
 print(fahrenheit)
 
-# the most basic NN - 1 layer with 1 neuron
-# later experiment with more layers and more neurons
+# The most basic NN - 1 layer with 1 neuron
+# Experiment with more layers and more neurons later
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=[1]),
     tf.keras.layers.Dense(units=1),
@@ -66,7 +66,7 @@ model = tf.keras.Sequential([
 # later experiment with MeanSquaredError (MSE) loss - it usually helps to achieve better results for this problem
 model.compile(
     loss=tf.keras.losses.MeanAbsoluteError(),
-    optimizer=tf.keras.optimizers.Adam(0.1)
+    optimizer=tf.keras.optimizers.Adam(learning_rate=0.1),
 )
 
 # you can also use string values which will be converted to the corresponding objects with default values
@@ -78,10 +78,10 @@ model.compile(
 # Summary of the network layers and its parameters
 model.summary()
 
-# randomly initialized weights (bias is zero)
+# Randomly initialized weights (bias is zero)
 print(model.layers[0].get_weights())
 
-w: float = 0.981253
+w: float = -0.16775429
 b: float = 0
 celsius_value: float = 20.0
 y: float = celsius_value * w + b
@@ -91,8 +91,8 @@ print(f"loss = {loss}")
 
 # model.fit starts the training process with defined number of epochs
 # verbose=False - the output is very long, and we have 500 epochs, experiment with value of True (which is default)
-history = model.fit(x=celsius, y=fahrenheit, epochs=500, verbose=False)
-print("Training finished")
+history = model.fit(x=celsius, y=fahrenheit, epochs=200, verbose=False)
+print("Training has finished")
 
 plt.xlabel("Epoch Number")
 plt.ylabel("Loss Value")
@@ -100,7 +100,7 @@ plt.plot(history.history["loss"])
 # plt.plot(history.history["loss"][100:499])
 plt.show()
 
-# make sure this value was NOT in the training
+# Make sure this value was NOT in the training set
 celsius_test_value_float: float = 25.0
 celsius_test_value: np.ndarray = np.array([celsius_test_value_float], dtype=np.float32)
 print("Predicted value:", model.predict(celsius_test_value))
@@ -108,25 +108,26 @@ print("Correct value:", celsius_test_value[0] * 1.8 + 32)
 
 print("These are the neuron variables values:", model.layers[0].get_weights())
 
-celsius_test: np.ndarray = np.array([-45, -20, 5, 25, 40, 60], dtype=np.float32)  # these values were NOT in the train set (very important!)
+# These values were NOT in the training set (very important!)
+celsius_test: np.ndarray = np.array([-450, -20, 5, 25, 40, 600], dtype=np.float32)
 fahrenheit_true: np.ndarray = np.array([t * 1.8 + 32 for t in celsius_test])
 
 fahrenheit_predicted: np.ndarray = model.predict(celsius_test).flatten()
 error: np.ndarray = np.abs(fahrenheit_predicted - fahrenheit_true)
 
-print("Correct values:", fahrenheit_true)
-print("Predicted values:", fahrenheit_predicted)
+print(f"Correct values: {fahrenheit_true}")
+print(f"Predicted values: {fahrenheit_predicted}")
 print()
-print("Absolute error values:", error)
-print("MAE:", np.average(error))
+print(f"Absolute error values: {error}")
+print(f"MAE: {np.average(error)}")
 
-# MAE = |a - b|
-# MSE = (a - b)^2
+# MAE (Mean Absolute Error) = |a - b|
+# MSE (Mean Squared Error)  = (a - b)^2
 
-mae = tf.keras.losses.MeanAbsoluteError()
-mae_val = mae(fahrenheit_true, fahrenheit_predicted).numpy()
-print("MAE:", mae_val)
+mae_function = tf.keras.losses.MeanAbsoluteError()
+mae_val = mae_function(fahrenheit_true, fahrenheit_predicted).numpy()
+print(f"MAE: {mae_val}")
 
-mse = tf.keras.losses.MeanSquaredError()
-mse_val = mse(fahrenheit_true, fahrenheit_predicted).numpy()
-print("MSE:", mse_val)
+mse_function = tf.keras.losses.MeanSquaredError()
+mse_val = mse_function(fahrenheit_true, fahrenheit_predicted).numpy()
+print(f"MSE: {mse_val}")
