@@ -83,7 +83,7 @@ for episode in range(episodes):
         if terminated:
             target = reward
         else:
-            future_prediction: np.ndarray = model(next_state, training=False).numpy()
+            future_prediction: np.ndarray = model(next_state, training=False).numpy() # alternative to model.predict
             # print(f"future_prediction = {future_prediction}")
             max_future_prediction: float = np.amax(future_prediction[0])
             # print(f"max_future_prediction = {max_future_prediction}")
@@ -96,7 +96,7 @@ for episode in range(episodes):
         target_f[0][action] = target
         # print(f"target_f = {target_f}")
 
-        model.fit(state, target_f, epochs=1, verbose=False)
+        model.fit(x=state, y=target_f, epochs=1, verbose=False)
 
         state = next_state
         time += 1
