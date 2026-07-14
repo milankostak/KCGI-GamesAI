@@ -17,12 +17,12 @@ base64_image = encode_image("img.png")
 # https://platform.openai.com/docs/guides/images-vision?format=base64-encoded
 # noinspection PyTypeChecker
 response = client.responses.create(
-    model="gpt-4o",
+    model="gpt-5.6-terra",
     input=[
         {
             "role": "user",
             "content": [
-                {"type": "input_text", "text": "what's in this image?"},
+                {"type": "input_text", "text": "What's in this image?"},
                 {
                     "type": "input_image",
                     "image_url": f"data:image/jpeg;base64,{base64_image}",

@@ -7,7 +7,7 @@ client = OpenAI(api_key=api_key)
 
 # https://platform.openai.com/docs/guides/text
 response = client.chat.completions.create(
-    model="gpt-4o",
+    model="gpt-5.6-terra",
     # temperature=0.7,  # 0.0 is deterministic, 2.0 is maximum entropy, 1.0 is the default value
     # max_tokens=1000,  # maximum number of tokens to generate
     # stop=["and"],     # stop the generation when the token is generated
