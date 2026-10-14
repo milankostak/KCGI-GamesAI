@@ -1,3 +1,7 @@
 /.idea
 /venv
-students.py
+
+# Purposefully ignored so students experience creating the environment
+.python-version
+pyproject.toml
+uv.lock
