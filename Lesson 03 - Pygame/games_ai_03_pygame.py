@@ -18,17 +18,19 @@ def main():
     items_color: tuple[int, int, int] = (255, 220, 50)  # orange
 
     # Ball settings
-    ball_size: int = 16
+    ball_size: int = 20
     ball_x_speed: int = 5
     ball_y_speed: int = 5
 
     # Ball position
-    ball_x: int = (screen_width // 2) - (ball_size // 2)
-    ball_y: int = (screen_height // 2) - (ball_size // 2)
+    ball_x_origin: int = (screen_width // 2) - (ball_size // 2)
+    ball_y_origin: int = (screen_height // 2) - (ball_size // 2)
+    ball_x: int = ball_x_origin
+    ball_y: int = ball_y_origin
 
     # Paddles settings
     paddle_width: int = 10
-    paddle_height: int = 60
+    paddle_height: int = 100
     paddle_speed: int = 10
 
     # Paddles positions
@@ -40,6 +42,7 @@ def main():
     # Game loop
     running: bool = True
     while running:
+        # First we need to see if the user has requested to exit from the application (i.e. the game)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -74,7 +77,7 @@ def main():
         # Scoring
         if ball_x < 0 or ball_x > screen_width:
             # Reset the ball
-            ball_x, ball_y = (screen_width // 2) - (ball_size // 2), (screen_height // 2) - (ball_size // 2)
+            ball_x, ball_y = ball_x_origin, ball_y_origin
 
         # Drawing
         screen.fill(color=background_color)
@@ -96,10 +99,11 @@ def main():
             color=items_color,
             rect=(ball_x, ball_y, ball_size, ball_size),
         )
-        pygame.display.flip()
-        pygame.time.Clock().tick(60)  # FPS
 
-    # Cleanup up when running is False
+        pygame.display.flip()
+        pygame.time.Clock().tick(60)  # Forcing fixed FPS. If you don't you have to handle that manually.
+
+    # Clean up when running is False
     pygame.quit()
 
 
