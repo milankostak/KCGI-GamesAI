@@ -40,11 +40,6 @@ board: list[list[str]] = [["" for _ in range(3)] for _ in range(3)]
 HUMAN: str = "O"
 AI: str = "X"
 
-# Game states
-game_over: bool = False
-winner: str | None = None
-current_player: str = HUMAN  # Human starts
-
 
 def draw_board() -> None:
     """
@@ -182,7 +177,10 @@ def ai_turn() -> None:
 
 
 def main_loop() -> None:
-    global game_over, current_player, winner
+    # Game states
+    game_over: bool = False
+    winner: str | None = None
+    current_player: str = HUMAN  # Human starts
 
     while not game_over:
         for event in pygame.event.get():
@@ -238,5 +236,5 @@ def main_loop() -> None:
 
 
 if __name__ == "__main__":
-    # Start the main game loop
+    # Start the main game loop when running this file
     main_loop()

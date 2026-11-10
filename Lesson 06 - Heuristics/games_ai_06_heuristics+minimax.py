@@ -41,14 +41,6 @@ board: list[list[str]] = [["" for _ in range(3)] for _ in range(3)]
 HUMAN: str = "O"
 AI: str = "X"
 
-# Game states
-game_over: bool = False
-winner: str | None = None
-current_player: str = HUMAN  # Human starts
-
-iterations_count: int = 0
-
-
 def draw_board() -> None:
     """
     Draw the Tic Tac Toe board respectively to the screen size
@@ -126,24 +118,23 @@ def check_draw() -> bool:
     return True
 
 
-def minimax(board_variant: list[list[str]], depth: int, is_maximizing: bool) -> float:
+def minimax(board_variant: list[list[str]], depth: int, is_maximizing: bool) -> tuple[float, int]:
     """
     Minimax algorithm to determine the best move for the AI
     :param board_variant: The current game state at the given depth
     :param depth: The depth of the game tree
     :param is_maximizing: True if the AI is maximizing, False if the AI is minimizing (playing as the human)
-    :return: The best score in context of the AI player
+    :return: The best score in context of the AI player and the number of iterations (visited nodes) in this subtree
     """
-    global iterations_count
-    iterations_count = iterations_count + 1
-    print(f"depth: {depth}, is_maximizing: {is_maximizing}, board: {board_variant}, iterations: {iterations_count}")
+    iterations_count: int = 1  # This call itself
+    print(f"depth: {depth}, is_maximizing: {is_maximizing}, board: {board_variant}")
 
     if check_win(AI):
-        return 1
+        return 1, iterations_count
     if check_win(HUMAN):
-        return -1
+        return -1, iterations_count
     if check_draw():
-        return 0
+        return 0, iterations_count
 
     best_score: float
     if is_maximizing:
@@ -153,12 +144,13 @@ def minimax(board_variant: list[list[str]], depth: int, is_maximizing: bool) -> 
                 # Check if cell is available
                 if board_variant[row][col] == "":
                     board_variant[row][col] = AI
-                    score = minimax(board_variant, depth + 1, False)
+                    score, sub_iterations = minimax(board_variant, depth + 1, False)
+                    iterations_count += sub_iterations
                     board_variant[row][col] = ""
                     best_score = max(score, best_score)
                     # print(f"best_score max: {best_score}, depth: {depth}")
         # print(f"return best_score max: {best_score}, depth: {depth}")
-        return best_score
+        return best_score, iterations_count
     else:
         best_score = math.inf
         for row in range(3):
@@ -166,12 +158,13 @@ def minimax(board_variant: list[list[str]], depth: int, is_maximizing: bool) -> 
                 # Check if cell is available
                 if board_variant[row][col] == "":
                     board_variant[row][col] = HUMAN
-                    score = minimax(board_variant, depth + 1, True)
+                    score, sub_iterations = minimax(board_variant, depth + 1, True)
+                    iterations_count += sub_iterations
                     board_variant[row][col] = ""
                     best_score = min(score, best_score)
                     # print(f"best_score min: {best_score}, depth: {depth}")
         # print(f"return best_score min: {best_score}, depth: {depth}")
-        return best_score
+        return best_score, iterations_count
 
 
 def evaluate_move() -> tuple[int, int] | None:
@@ -218,8 +211,7 @@ def ai_turn() -> None:
     # 4 Other optimisations... TODO up to you
 
     # 5 Otherwise run Minimax if we have other situation
-    global iterations_count
-    iterations_count = 0
+    iterations_count: int = 0
     best_score: float = -math.inf
     move: tuple[int, int] = (-1, -1)
     # Iterate over the board and determine the best move
@@ -228,7 +220,8 @@ def ai_turn() -> None:
             # Check if cell is available
             if board[row][col] == "":
                 board[row][col] = AI  # Simulate the move
-                score: float = minimax(board, 0, False)
+                score, sub_iterations = minimax(board, 0, False)
+                iterations_count += sub_iterations
                 board[row][col] = ""  # Undo the move
                 if score > best_score:
                     best_score = score
@@ -239,7 +232,10 @@ def ai_turn() -> None:
 
 
 def main_loop() -> None:
-    global game_over, current_player, winner
+    # Game states
+    game_over: bool = False
+    winner: str | None = None
+    current_player: str = HUMAN  # Human starts
 
     while not game_over:
         for event in pygame.event.get():
@@ -295,5 +291,5 @@ def main_loop() -> None:
 
 
 if __name__ == "__main__":
-    # Start the main game loop
+    # Start the main game loop when running this file
     main_loop()
