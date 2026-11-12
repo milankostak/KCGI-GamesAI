@@ -108,6 +108,7 @@ def main():
 
 
 if __name__ == "__main__":
+    # Start the main game loop when running this file
     main()
 
 # Ctrl+Alt+O / Control+Option+O = Organize imports
