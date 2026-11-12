@@ -41,6 +41,7 @@ board: list[list[str]] = [["" for _ in range(3)] for _ in range(3)]
 HUMAN: str = "O"
 AI: str = "X"
 
+
 def draw_board() -> None:
     """
     Draw the Tic Tac Toe board respectively to the screen size
@@ -195,6 +196,7 @@ def ai_turn() -> None:
             if board[row][col] == "":  # If the cell is empty
                 board[row][col] = AI  # Simulate the AI's move
                 if check_win(AI):  # Check if this is a winning move for the AI
+                    print("Heuristic evalution: AI win")
                     return
                 board[row][col] = ""  # Reset the board back
 
@@ -205,6 +207,7 @@ def ai_turn() -> None:
                 board[row][col] = HUMAN  # Simulate the human's move
                 if check_win(HUMAN):  # Check if this is a winning move for the human player - if so then block it
                     board[row][col] = AI  # Block the cell to prevent losing
+                    print("Heuristic evalution: Blocking possible human win")
                     return
                 board[row][col] = ""  # Reset the board back
 
